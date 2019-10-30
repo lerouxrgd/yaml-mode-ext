@@ -1,3 +1,36 @@
+;;; yaml-mode-ext.el --- Extension for yaml-mode. -*- lexical-binding: t -*-
+
+;; Author: Takayuki Sato <takayuki.sato.dev@gmail.com>
+;; URL: https://github.com/lerouxrgd/yaml-mode-ext
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "26.2") (yaml-mode "0.0.14"))
+;; Keywords: yaml, yaml-mode
+
+;; This file is not part of GNU Emacs.
+
+;;; License:
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation, either version 3 of the
+;; License, or (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;;; Extension for yaml-mode.
+
+;;; Code:
+
+(require 'yaml-mode)
 
 (defun yaml-blank-line-p ()
   "Return non-nil if and only if current line is blank."
@@ -13,7 +46,8 @@
       (back-to-indentation)
       (looking-at (rx (or (syntax comment-start) line-end))))))
 
-(defun yaml-beginning-of-block (&optional arg)
+(defun yaml-beginning-of-block (&optional _arg)
+  "Go to the beginning of a block."
   (interactive "p")
   (let ((this-level (current-indentation)))
     (unless (eql 0 this-level)
@@ -23,7 +57,8 @@
                       (yaml-blank-line-p)))))
     (back-to-indentation)))
 
-(defun yaml-end-of-block (&optional arg)
+(defun yaml-end-of-block (&optional _arg)
+  "Go to the end of a block."
   (interactive "p")
   (let ((this-level (current-indentation)))
     (while (and (zerop (forward-line))
@@ -34,7 +69,8 @@
   (forward-line -1)
   (end-of-line))
 
-(defun yaml-down-block (&optional arg)
+(defun yaml-down-block (&optional _arg)
+  "Go to the next block down."
   (interactive "p")
   (let ((this-level (current-indentation))
         (orig (point)))
@@ -45,7 +81,8 @@
         (back-to-indentation)
       (goto-char orig))))
 
-(defun yaml-previous-block (&optional arg)
+(defun yaml-previous-block (&optional _arg)
+  "Go to the previous block."
   (interactive "p")
   (let ((this-level (current-indentation))
         (orig (point)))
@@ -57,7 +94,8 @@
         (back-to-indentation)
       (goto-char orig))))
 
-(defun yaml-next-block (&optional arg)
+(defun yaml-next-block (&optional _arg)
+  "Go to the next block."
   (interactive "p")
   (let ((this-level (current-indentation))
         (orig (point)))
@@ -76,3 +114,4 @@
 (define-key yaml-mode-map (kbd "M-C-e") 'yaml-end-of-block)
 
 (provide 'yaml-mode-ext)
+;;; yaml-mode-ext.el ends here
